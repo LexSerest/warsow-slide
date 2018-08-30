@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-Cvar slideAllowInstaGib( "slide_allowInstagib", "1", CVAR_ARCHIVE );
+Cvar slideAllowInstaGib( "slide_allowInstagib", "0", CVAR_ARCHIVE );
 Cvar slideOnlyInstaGib( "slide_onlyInstagib", "0", CVAR_ARCHIVE );
 
 

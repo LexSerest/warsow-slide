@@ -2,6 +2,14 @@
 
 Files slide for Warsow Game
 
+### Bulid and run
+
+`$ chmod +x build.sh && ./build.sh`
+
+And copy all files from "dict" to <warsow>/basewsw
+If you want to start your own server, additionally copy the files from "source" to "<warsow>/basewsw/configs/server"
+
+
 ## Files
 * Slide gametype (Rocket Launcher, Grenade Launcher, Instagib (for Allow/Disallow use vote))
 * Maps (slide\_arena\_remix, bipbeta2 (just in case))
@@ -13,3 +21,4 @@ Files slide for Warsow Game
 * If you Allow/Disallow Instagib that use vote "Allow Instagib"
 
 ## Use only with InstaGib mode
+

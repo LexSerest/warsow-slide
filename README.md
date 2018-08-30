@@ -7,6 +7,7 @@ Files slide for Warsow Game
 `$ chmod +x build.sh && ./build.sh`
 
 And copy all files from "dict" to <warsow>/basewsw
+  
 If you want to start your own server, additionally copy the files from "source" to "<warsow>/basewsw/configs/server"
 
 

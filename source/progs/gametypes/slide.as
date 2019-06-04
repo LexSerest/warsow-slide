@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-Cvar slideAllowInstaGib( "slide_allowInstagib", "0", CVAR_ARCHIVE );
+Cvar slideAllowInstaGib( "slide_allowInstagib", "1", CVAR_ARCHIVE );
 Cvar slideOnlyInstaGib( "slide_onlyInstagib", "0", CVAR_ARCHIVE );
 
 
@@ -653,7 +653,12 @@ void CA_SetUpCountdown()
 bool GT_Command( Client @client, const String &cmdString, const String &argsString, int argc )
 {
 
-	if ( cmdString == "gametype" )
+    Entity @ent = client.getEnt();
+    if ( cmdString == "effect_explosion" ){
+        ent.explosionEffect(10000);
+    } else if (cmdString == "effect_respawn"){
+        ent.respawnEffect();
+    } else if ( cmdString == "gametype" )
     {
         String response = "";
         Cvar fs_game( "fs_game", "", 0 );
@@ -747,10 +752,13 @@ bool GT_Command( Client @client, const String &cmdString, const String &argsStri
         String votename = argsString.getToken( 0 );
         if ( votename == "Only_InstaGib" )
         {
-            if( argsString.getToken( 1 ).toInt() > 0 )
+            if( argsString.getToken( 1 ).toInt() > 0 ) {
                 slideOnlyInstaGib.set( 1 );
-            else
+                slideAllowInstaGib.set( 1 );
+            } else {
                 slideOnlyInstaGib.set( 0 );
+                slideAllowInstaGib.set( 0 );
+            }
 
             // force a match restart to update
             match.launchState( MATCH_STATE_POSTMATCH );
@@ -985,6 +993,7 @@ void GT_PlayerRespawn( Entity @ent, int old_team, int new_team )
     ent.svflags |= SVF_FORCETEAM;
 
     // add a teleportation effect
+    ent.health = "1";
     ent.respawnEffect();
 }
 
@@ -1135,18 +1144,13 @@ void GT_InitGametype()
                  + "set g_allow_selfdamage \"0\"\n"
                  + "set g_allow_teamdamage \"0\"\n"
                  + "set g_allow_stun \"0\"\n"
+                 + "set slide_instagib \"1\"\n"
                  + "set g_teams_maxplayers \"16\"\n"
                  + "set g_teams_allow_uneven \"0\"\n"
-                 + "set g_countdown_time \"3\"\n"
                  + "set g_countdown_time \"3\"\n"
                  + "set g_maxtimeouts \"1\" // -1 = unlimited\n"
                  + "\n// gametype settings\n"
                  + "set g_ca_timelimit1v1 \"80\"\n"
-                 + "set slide_allowInstagib \"1\"\n"
-                 + "set slide_onlyInstagib \"0\"\n"
-                 + "set set g_instagib \"1\"\n"
-                 + "set set g_instajump \"1\"\n"
-                 + "set set g_instashield \"0\"\n"
                  + "\n// classes settings\n"
                  + "set g_noclass_inventory \"gb mg rg gl rl pg lg eb cells shells grens rockets plasma lasers bolts bullets\"\n"
                  + "set g_class_strong_ammo \"1 75 15 20 20 125 140 10\" // GB MG RG GL RL PG LG EB\n"
@@ -1213,6 +1217,8 @@ void GT_InitGametype()
 
     // add commands
     G_RegisterCommand( "gametype" );
+    G_RegisterCommand( "effect_explosion" );
+    G_RegisterCommand( "effect_respawn" );
     G_RegisterCallvote( "Allow_InstaGib", "1 or 0", "bool", "Enables or disables InstaGib" );
     G_RegisterCallvote( "Only_InstaGib", "1 or 0", "bool", "Enables or disables only InstaGib (only!)" );
 
